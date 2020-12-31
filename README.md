@@ -9,9 +9,18 @@ The abstract strategy game Quoridor is surprisingly deep for its simple rules. T
 
 [Open on GitHub Pages](https://iliagrigorevdev.github.io/quoridor-web/)
 
-## Built With
+## Thanks To
+[AlphaZero](https://deepmind.com/blog/article/alphazero-shedding-new-light-grand-games-chess-shogi-and-go) is a general-purpose reinforcement
+learning algorithm.
+
+[PyTorch](https://pytorch.org/) is an open source machine learning framework.
+
+[GoogleTest](https://github.com/google/googletest) is a Google testing and mocking framework.
+
+[Emscripten](https://emscripten.org/) is a complete compiler toolchain to WebAssembly.
+
 [Filament](https://github.com/google/filament) is a real-time physically based rendering engine.
 
-[ONNX.js](https://github.com/microsoft/onnxjs) is a Javascript library for running ONNX models on browsers and on Node.js.
+[ONNX.js](https://github.com/microsoft/onnxjs) is a Javascript library for running ONNX models on browsers.
 
-Environment map is taken from [HDRIHaven](https://hdrihaven.com/).
+[HDRIHaven](https://hdrihaven.com/) is where you can find high quality HDRIs for free.

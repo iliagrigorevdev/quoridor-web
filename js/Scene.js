@@ -72,10 +72,25 @@ function convertBox(minX, minY, minZ, maxX, maxY, maxZ) {
   };
 }
 
-Filament.init(assets, () => {
-  const canvas = document.getElementsByTagName("canvas")[0];
-  window.app = new App(canvas);
-});
+const canvas = document.getElementsByTagName("canvas")[0];
+const gl = canvas.getContext("webgl2");
+if (gl) {
+  Filament.init(assets, () => {
+    window.app = new App(canvas);
+  });
+} else {
+  const link = document.createElement("a");
+  link.appendChild(document.createTextNode("support"));
+  link.href = "https://caniuse.com/webgl2";
+  const paragraph = document.createElement("p");
+  paragraph.appendChild(document.createTextNode("Your browser does not "));
+  paragraph.appendChild(link);
+  paragraph.appendChild(document.createTextNode(" WebGL 2.0, or it is an experimental feature that is disabled."));
+  paragraph.style.margin = "10px";
+  const container = document.getElementById("container");
+  container.removeChild(canvas);
+  container.appendChild(paragraph);
+}
 
 class App {
   constructor(canvas) {

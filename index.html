@@ -4,16 +4,26 @@
     <title>Quoridor</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+    <meta property="og:title" content="Quoridor"/>
+    <meta property="og:url" content="https://iliagrigorevdev.github.io/quoridor-web/"/>
+    <meta property="og:description" content="Board game against AI in which you either move a pawn or place a wall to cross the board first."/>
+    <meta property="og:type" content="game"/>
+    <meta property="og:image" content="https://iliagrigorevdev.github.io/quoridor-web/icon.png"/>
+    <meta property="og:image:width" content="512"/>
+    <meta property="og:image:height" content="512"/>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <style>
         body { margin: 0; overflow: hidden; }
         canvas { touch-action: none; width: 100%; height: 100%; }
     </style>
 </head>
 <body>
-    <canvas></canvas>
-    <script src="//unpkg.com/filament/filament.js"></script>
+    <div id="container">
+        <canvas></canvas>
+    </div>
+    <script src="//unpkg.com/filament@1.9.8/filament.js"></script>
     <script src="//unpkg.com/gl-matrix@2.8.1/dist/gl-matrix-min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/onnxjs@0.1.8/dist/onnx.min.js"></script>
     <script src="js/Quoridor.js"></script>
     <script src="js/Intersection.js"></script>
     <script src="js/Piece.js"></script>
