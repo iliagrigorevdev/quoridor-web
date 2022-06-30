@@ -152,12 +152,12 @@ class App {
         .build(this.engine, sunlight);
     this.scene.addEntity(sunlight);
 
-    const indirectLight = this.engine.createIblFromKtx(iblUrl);
+    const indirectLight = this.engine.createIblFromKtx1(iblUrl);
     indirectLight.setIntensity(100000);
     indirectLight.setRotation(mat3.fromQuat(mat3.create(), quat.fromEuler(quat.create(), 0, 120, 0)));
     this.scene.setIndirectLight(indirectLight);
 
-    const skybox = this.engine.createSkyFromKtx(skyUrl);
+    const skybox = this.engine.createSkyFromKtx1(skyUrl);
     this.scene.setSkybox(skybox);
 
     this.swapChain = this.engine.createSwapChain();
