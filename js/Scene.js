@@ -108,7 +108,7 @@ class App {
     this.animatingPiece = null;
     this.animationTime = 0;
     this.animationEndTime = 0;
-    this.actionResult = null;
+    this.finished = false;
 
     this.pawnRenderables = [];
     this.fenceRenderables = [];
@@ -214,7 +214,7 @@ class App {
     this.human = (this.human + 1) % 2;
     this.predicting = false;
     this.animatingPiece = null;
-    this.actionResult = this.quoridor.ActionResult.CONTINUE;
+    this.finished = false;
 
     this.elevation = DEFAULT_ELEVATION;
     this.heading = (this.human == 0 ? DEFAULT_WHITE_HEADING : DEFAULT_BLACK_HEADING);
@@ -379,10 +379,11 @@ class App {
     this.hideCrown();
 
     let winner;
-    if (this.actionResult == this.quoridor.ActionResult.PLAYER_WIN) {
-      winner = this.players[1 - this.current];
-    } else if (this.actionResult == this.quoridor.ActionResult.NO_GOAL_PATH) {
+    const outcome = this.quoridor.getOutcome(this.current);
+    if (outcome > 0) {
       winner = this.players[this.current];
+    } else if (outcome < 0) {
+      winner = this.players[1 - this.current];
     }
 
     if (winner !== undefined) {
@@ -392,7 +393,7 @@ class App {
   }
 
   executeAction(action) {
-    if (this.actionResult != this.quoridor.ActionResult.CONTINUE) {
+    if (this.finished) {
       return;
     }
 
@@ -400,7 +401,7 @@ class App {
     const opponent = this.players[1 - this.current];
 
     if (this.quoridor.isMovementAction(action)) {
-      this.actionResult = this.quoridor.executeAction(action);
+      this.quoridor.executeAction(action);
       const pawnPositions = this.quoridor.getPawnPositions();
       const nx = (this.current == 0 ? pawnPositions.whiteNx : pawnPositions.blackNx);
       const ny = (this.current == 0 ? pawnPositions.whiteNy : pawnPositions.blackNy);
@@ -418,7 +419,7 @@ class App {
         throw new Error("No available fence");
       }
       const placement = this.quoridor.actionToPlacement(action);
-      this.actionResult = this.quoridor.executeAction(action);
+      this.quoridor.executeAction(action);
       const fence = player.fences[player.fences.length - player.remainFenceCount];
       fence.move(-this.boardOffset + 0.5 + placement.nx,
                  -this.boardOffset + 0.5 + placement.ny,
@@ -428,6 +429,8 @@ class App {
       this.animatingPiece = fence;
       this.animationEndTime = CURVED_ANIMATION_END_TIME;
     }
+
+    this.finished = this.quoridor.isFinished();
 
     this.animationTime = 0;
     this.hideActions();
@@ -448,7 +451,7 @@ class App {
       this.current = 1 - this.current;
       this.predicting = false;
       this.animatingPiece = null;
-      if (this.actionResult == this.quoridor.ActionResult.CONTINUE) {
+      if (!this.finished) {
         this.showActions();
         this.showThinking();
       } else {
@@ -460,7 +463,7 @@ class App {
   updatePrediction() {
     if ((this.current == -1) || (this.current == this.human) ||
         this.predicting || (this.animatingPiece != null) || (this.dirty > 0) ||
-        (this.actionResult != this.quoridor.ActionResult.CONTINUE)) {
+        this.finished) {
       return;
     }
 
@@ -602,7 +605,7 @@ class App {
     }
 
     if (!this.dragging) {
-      if (this.actionResult == this.quoridor.ActionResult.CONTINUE) {
+      if (!this.finished) {
         const ray = this.getCastingRay(e.clientX, e.clientY);
 
         let movementHitDistance;
